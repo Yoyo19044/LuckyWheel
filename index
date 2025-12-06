@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สุ่มของขวัญ</title>
+
+<style>
+body{
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+.container{
+  padding-top: 50px;
+}
+#wheel{
+  width: 80vw;
+  max-width: 330px;
+  height: 80vw;
+  max-height: 330px;
+  border-radius: 50%;
+  border: 8px solid #333;
+  margin: auto;
+  transition: 4s cubic-bezier(.17,.67,.83,.67);
+  background: conic-gradient(
+    #ff6961 0deg 72deg,    
+    #77dd77 72deg 144deg,  
+    #fdfd96 144deg 216deg, 
+    #84b6f4 216deg 288deg, 
+    #fdcae1 288deg 360deg  
+  );
+  position: relative;
+}
+.arrow{
+  width: 0; 
+  height: 0; 
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 30px solid #ff5252;
+  margin: auto;
+}
+button{
+  padding: 15px 35px;
+  font-size: 22px;
+  cursor: pointer;
+  margin-top: 45px;
+  border:none;
+  border-radius:12px;
+  background:#ff5252;
+  color:white;
+  font-weight:bold;
+}
+button:active{
+  opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>สุ่มของขวัญ</h2>
+  <div class="arrow"></div>
+  <div id="wheel"></div>
+  <button onclick="spin()">สุ่มเลย!</button>
+</div>
+
+<script>
+function spin(){
+  let wheel = document.getElementById("wheel");
+  let finalAngle = 360*10 + 315; 
+  wheel.style.transform = "rotate(" + finalAngle + "deg)";
+  setTimeout(()=>{
+    alert("อ้วนได้ เงิน 1,000 บาท!! 🎉");
+  },4200);
+}
+</script>
+
+</body>
+</html>
