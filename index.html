@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>สุ่มของขวัญ</title>
-
+<meta charset="UTF-8">
+<title>วงล้อสุ่มรางวัล</title>
 <style>
-body{
-  font-family: sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  background: #fff;
-}
-.container{
-  padding-top: 50px;
-}
-#wheel{
-  width: 80vw;
-  max-width: 330px;
-  height: 80vw;
-  max-height: 330px;
-  border-radius: 50%;
-  border: 8px solid #333;
-  margin: auto;
-  transition: 4s cubic-bezier(.17,.67,.83,.67);
-  background: conic-gradient(
-    #ff6961 0deg 72deg,    
-    #77dd77 72deg 144deg,  
-    #fdfd96 144deg 216deg, 
-    #84b6f4 216deg 288deg, 
-    #fdcae1 288deg 360deg  
-  );
-  position: relative;
-}
-.arrow{
-  width: 0; 
-  height: 0; 
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-bottom: 30px solid #ff5252;
-  margin: auto;
-}
-button{
-  padding: 15px 35px;
-  font-size: 22px;
-  cursor: pointer;
-  margin-top: 45px;
-  border:none;
-  border-radius:12px;
-  background:#ff5252;
-  color:white;
-  font-weight:bold;
-}
-button:active{
-  opacity:0.6;
-}
+    body { font-family: sans-serif; text-align: center; padding-top: 40px;}
+    canvas { margin-top: 20px; }
+    button{
+        padding: 15px 30px;
+        background:#ff6666;
+        color:#fff;
+        border:none;
+        font-size:20px;
+        border-radius:10px;
+        cursor:pointer;
+        margin-top:40px;
+    }
+    h1{margin:0;}
 </style>
 </head>
-
 <body>
 
-<div class="container">
-  <h2>สุ่มของขวัญ</h2>
-  <div class="arrow"></div>
-  <div id="wheel"></div>
-  <button onclick="spin()">สุ่มเลย!</button>
-</div>
+<h1>สุ่มของขวัญ</h1>
+
+<canvas id="wheel" width="400" height="400"></canvas>
+
+<button onclick="spin()">สุ่มเลย!</button>
+
+<h2 id="result"></h2>
 
 <script>
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+
+const prizes = ["50", "100", "500", "1000","!!!ของรางวัลปริศนา!!!"];  // รางวัล
+const colors = ["#ff9999","#99ff99","#9999ff","#ffff99","#FFFFFF"]; // สีแต่ละช่อง
+
+const wheelRadius = 180;
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+function drawWheel(){
+    const arc = 2 * Math.PI / prizes.length;
+
+    for(let i = 0; i < prizes.length; i++){
+        const startAngle = i * arc;
+        
+        // วาดพื้นหลังของช่อง
+        ctx.beginPath();
+        ctx.fillStyle = colors[i];
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, wheelRadius, startAngle, startAngle + arc);
+        ctx.fill();
+        ctx.closePath();
+
+        // วาดข้อความ
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + arc/2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#000";
+        ctx.font = "bold 20px sans-serif";
+        ctx.fillText(prizes[i], wheelRadius - 10, 10);
+        ctx.restore();
+    }
+
+    // วาดกรอบ
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, wheelRadius, 0, 2*Math.PI);
+    ctx.lineWidth = 12;
+    ctx.strokeStyle = "#333";
+    ctx.stroke();
+}
+
+// วาดครั้งแรก
+drawWheel();
+
+// ฟังก์ชั่นหมุนวงล้อ
 function spin(){
-  let wheel = document.getElementById("wheel");
-  let finalAngle = 360*10 + 315; 
-  wheel.style.transform = "rotate(" + finalAngle + "deg)";
-  setTimeout(()=>{
-    alert("อ้วนได้ เงิน 1,000 บาท!! 🎉");
-  },4200);
+
+    // ----- ล็อครางวัลแบบเนียน ๆ -----
+    const targetPrize = "!!!ของรางวัลปริศนา!!!";  // รางวัลที่ล็อก
+    const index = prizes.indexOf(targetPrize);
+    const arc = 2 * Math.PI / prizes.length;
+
+    // หมุนหลายรอบก่อนหยุดที่ช่องเป้าหมาย
+    const rotateTo = (Math.PI * 4) + (index * arc) + arc/2;
+
+    canvas.style.transition = "transform 4s ease-out";
+    canvas.style.transform = `rotate(${rotateTo}rad)`;
+
+    document.getElementById("result").innerHTML = "";
+    
+    setTimeout(()=>{
+        document.getElementById("result").innerHTML = `🎉 อ้วนได้รางวัล: <b>${targetPrize}</b>`;
+    }, 4200);
 }
 </script>
 
