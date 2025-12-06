@@ -29,7 +29,7 @@
         border-right: 25px solid transparent;
         border-top: 40px solid #ff3333; /* สีลูกศร */
         margin: auto;
-        margin-top: -10px;
+        margin-top: -15px;
     }
 </style>
 </head>
@@ -49,7 +49,7 @@
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 
-const prizes = ["50", "100", "500", "1000","ของขวัญปริศนา"];  // รางวัล
+const prizes = ["50 ฿", "100 ฿", "500 ฿", "1000 ฿","ของขวัญปริศนา"];  // รางวัล
 const colors = ["#ff9999","#99ff99","#9999ff","#ffff99","#ffd1dc"]; // สีแต่ละช่อง
 
 const wheelRadius = 180;
@@ -111,7 +111,7 @@ function spin(){
 
     setTimeout(()=>{
         document.getElementById("result").innerHTML =
-            `🎉 คุณได้รางวัล: <b>${targetPrize}</b>`;
+            `🎉 อ้วนได้รางวัล: <b>${targetPrize}</b>`;
     }, 7200);
 }
 </script>
